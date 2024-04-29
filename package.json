@@ -1,0 +1,39 @@
+{
+  "name": "tauri_svelte_template",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "tauri": "tauri",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "check": "svelte-check --tsconfig ./tsconfig.json"
+  },
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^3.0.1",
+    "@tauri-apps/cli": "^1.5.12",
+    "@tsconfig/svelte": "^5.0.2",
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.4.32",
+    "postcss-load-config": "^5.0.2",
+    "svelte": "^4.2.12",
+    "svelte-check": "^3.6.7",
+    "tailwindcss": "^3.3.6",
+    "tslib": "^2.6.2",
+    "typescript": "^5.2.2",
+    "vite": "^5.2.0"
+  },
+  "dependencies": {
+    "-": "^0.0.1",
+    "@tauri-apps/cli": "^1.4.0",
+    "autoprefixer": "^10.4.19",
+    "D": "^1.0.0",
+    "flowbite-svelte": "^0.46.1",
+    "flowbite-svelte-icons": "^1.5.0",
+    "openai": "^4.38.5",
+    "postcss": "^8.4.38",
+    "svelte-markdown": "^0.4.1",
+    "tailwindcss": "^3.4.3"
+  }
+}
