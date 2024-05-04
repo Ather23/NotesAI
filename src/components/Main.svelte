@@ -5,7 +5,7 @@
   console.log(drawerHidden);
 </script>
 
-<div class="h-max">
+<div class="h-max pb-2">
   <GradientButton
     color="lime"
     on:click={() => {

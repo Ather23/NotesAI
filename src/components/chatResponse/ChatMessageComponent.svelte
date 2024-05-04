@@ -22,7 +22,7 @@
 <div>
   {#if isAgent}
     <div
-      class="font-mono text-lime-500 bg-zinc-800 mb-3 leading-relaxed rounded-lg"
+      class="font-comic-sans text-lime-200 bg-zinc-800 mb-3 leading-relaxed rounded-md"
     >
       <div class="text-white">
         <Toolbar slot="header" embedded>
@@ -38,10 +38,11 @@
       </div>
     </div>
   {:else}
-    <div class="font-mono text-white leading-relaxed pb-2">
+    <div
+      class="font-mono bg-indigo-900 text-white leading-relaxed p-2 mb-4 rounded-md"
+    >
       <div>
         <p>
-          <b>U: </b>
           {msg}
         </p>
       </div>

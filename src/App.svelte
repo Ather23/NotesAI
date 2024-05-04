@@ -7,7 +7,7 @@
 <main class="container">
   <div class="h-screen">
     <Main />
-    <div class="h-screen m-2">
+    <div class="h-screen">
       <ChatApp />
     </div>
   </div>

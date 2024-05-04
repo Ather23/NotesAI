@@ -14,7 +14,7 @@
   let userMessage = "";
 
   let instructions =
-    "Your are a helpful assistant that can answer relevant questions. Your response should be formatted clearly in markdow format.";
+    "Your are a helpful assistant that can answer relevant questions. Your response should be formatted clearly in markdow format. Create new line between bullet points.";
   let config = new AgentConfig(
     "agent",
     "this is a description",
@@ -27,11 +27,14 @@
       return;
     }
 
+    let prompMsg = userMessage;
+    userMessage = "";
+
     let openAiAgent = new OpenAiCodingAgent();
     openAiAgent.setAgentConfig(config);
-    chatArray.push(new ChatMessage("user", false, userMessage));
+    chatArray.push(new ChatMessage("user", false, prompMsg));
     chatArray = chatArray;
-    let stream = await openAiAgent.predict(userMessage, chatArray);
+    let stream = await openAiAgent.predict(prompMsg, chatArray);
 
     // Iterate through the generator
     for await (const prediction of stream) {
@@ -45,7 +48,7 @@
 </script>
 
 <div class="w-full h-full flex flex-col">
-  <div class="flex-1 overflow-y-auto px-4 py-2">
+  <div class="flex-1 overflow-y-auto overflow-x-hidden">
     {#each chatArray as chat}
       <ChatMessageComponent msg={chat.msg} isAgent={chat.isAgent} />
     {/each}
@@ -56,8 +59,8 @@
       </div>
     {/if}
   </div>
-  <div class="flex items-center justify-between px-4 py-2">
-    <div class="flex-1 px-4 py-2 mb-10">
+  <div class="flex items-center justify-between">
+    <div class="flex-1 mb-10">
       <Textarea
         id="textarea-id"
         placeholder="Your message"

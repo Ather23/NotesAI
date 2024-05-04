@@ -1,6 +1,8 @@
 import OpenAI from 'openai';
 import { ChatMessage } from '../components/chatResponse/ChatMessage';
 import type { ChatCompletionMessageParam } from 'openai/resources/index.mjs';
+import { invoke } from '@tauri-apps/api/tauri'
+import { Utils } from '../utils';
 
 export interface IAgent {
     name: string;
@@ -51,7 +53,12 @@ export class OpenAiCodingAgent implements IAgent {
             } as ChatCompletionMessageParam
         })
 
-        const openai = new OpenAI({ apiKey: "<you-key>",dangerouslyAllowBrowser: true } );    
+        let key = await read_openai_key();
+        if (Utils.isUndefined(key)){
+           throw new Error("OpenAI Key not found");
+        }
+     
+        const openai = new OpenAI({ apiKey: key ,dangerouslyAllowBrowser: true } );    
         const aiStream = await openai.chat.completions.create({
             model: 'gpt-4-turbo',
             stream: true,
@@ -72,5 +79,15 @@ export class OpenAiCodingAgent implements IAgent {
             const token = part.choices[0]?.delta?.content || '';
             yield token;
         }
+    }
+}
+
+async function read_openai_key(): Promise<string | undefined> {
+
+    try {
+        const key = await invoke('read_config');
+        return key as string; // Return the key directly
+    } catch (e) {
+        throw new Error("unable to read open ai key: " + e);
     }
 }
