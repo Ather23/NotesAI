@@ -1,16 +1,16 @@
-<script lang>
+<script lang="ts">
   import AppDrawer from "./AppDrawer.svelte";
-  import { GradientButton } from "flowbite-svelte";
+  import { Drawer, GradientButton } from "flowbite-svelte";
+  import { createEventDispatcher } from "svelte";
+
   let drawerHidden = true;
-  console.log(drawerHidden);
 </script>
 
 <div class="h-max pb-2">
   <GradientButton
-    color="lime"
+    color="blue"
     on:click={() => {
       drawerHidden = false;
-      console.log("Main: " + drawerHidden);
     }}
   ></GradientButton>
   <AppDrawer {drawerHidden} />
