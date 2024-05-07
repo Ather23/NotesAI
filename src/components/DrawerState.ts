@@ -1,0 +1,3 @@
+interface DrawerState {
+    clickedMenuItemIndex: number;
+  }
