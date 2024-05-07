@@ -5,7 +5,7 @@ export function saveDrawerMenuSelection(index:number){
       sessionStorage.setItem("drawerState", JSON.stringify(drawerState));  
 }
 
-export function getDrawerStateFromLocalStorage(): DrawerState {
+export function getDrawerStateFromSessionStorage(): DrawerState {
     if(!sessionStorage.getItem('drawerState')){
         return JSON.parse(JSON.stringify( { 'clickedMenuItemIndex' : 0})) as DrawerState;
     }
