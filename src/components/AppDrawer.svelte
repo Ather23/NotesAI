@@ -9,6 +9,7 @@
   } from "flowbite-svelte";
   import { GridSolid } from "flowbite-svelte-icons";
   import { sineIn } from "svelte/easing";
+  import { saveDrawerMenuSelection } from "../sessionStorage";
 
   export let drawerHidden = true;
   let transitionParams = {
@@ -18,11 +19,7 @@
   };
 
   function setSelectedMenuIndex(index: number) {
-    console.log("setselectedmenuindex: " + index);
-    const drawerState: DrawerState = {
-      clickedMenuItemIndex: index,
-    };
-    localStorage.setItem("drawerState", JSON.stringify(drawerState));
+    saveDrawerMenuSelection(index);
   }
 </script>
 

@@ -3,14 +3,11 @@
   import ChatApp from "./components/ChatApp.svelte";
   import Notepad from "./components/Notepad.svelte";
   import AppDrawer from "./components/AppDrawer.svelte";
-  import { getContext } from "svelte";
-  import { getDrawerStateFromLocalStorage } from "./lib/stores/DrawerState";
+  import { getDrawerStateFromSessionStorage } from "./sessionStorage";
 
   let menuItem: number = 0;
   function onMenuItemClick(): number {
-    let dstate = getDrawerStateFromLocalStorage() as DrawerState;
-    console.log(dstate);
-    let drawerState = getDrawerStateFromLocalStorage() as DrawerState;
+    let drawerState = getDrawerStateFromSessionStorage() as DrawerState;
     menuItem = drawerState.clickedMenuItemIndex;
     return drawerState.clickedMenuItemIndex as number;
   }
