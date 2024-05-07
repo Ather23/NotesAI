@@ -1,7 +1,7 @@
 <script lang="ts">
   import "./app.pcss";
   import ChatApp from "./components/ChatApp.svelte";
-  import Notepad from "./components/Notepad.svelte";
+  import Notepad from "./components/notepad/Notepad.svelte";
   import AppDrawer from "./components/AppDrawer.svelte";
   import { getDrawerStateFromSessionStorage } from "./sessionStorage";
 
@@ -13,7 +13,7 @@
   }
 </script>
 
-<main class="container">
+<main class="w-full">
   <AppDrawer drawerHidden />
   <div class="h-screen">
     {#if onMenuItemClick() === 0}
