@@ -6,8 +6,9 @@
     SidebarItem,
     CloseButton,
     GradientButton,
+    Button,
   } from "flowbite-svelte";
-  import { GridSolid } from "flowbite-svelte-icons";
+  import { GridSolid, RectangleListSolid } from "flowbite-svelte-icons";
   import { sineIn } from "svelte/easing";
   import { saveDrawerMenuSelection } from "../sessionStorage";
 
@@ -24,12 +25,16 @@
 </script>
 
 <div class="h-max pb-2">
-  <GradientButton
-    color="blue"
+  <Button
+    size="xs"
+    pill={false}
+    outline={false}
     on:click={() => {
       drawerHidden = !drawerHidden;
     }}
-  ></GradientButton>
+  >
+    <RectangleListSolid class="" />
+  </Button>
   <div id="drawer_nav">
     <Drawer
       transitionType="fly"
@@ -41,7 +46,7 @@
         <CloseButton
           on:click={() => {
             console.log("CloseButton: " + drawerHidden);
-            drawerHidden = false;
+            drawerHidden = true;
           }}
           class="mb-4 dark:text-white"
         />
