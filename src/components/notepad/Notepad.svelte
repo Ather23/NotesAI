@@ -4,7 +4,6 @@
   import { emoji } from "@cartamd/plugin-emoji";
   import { slash } from "@cartamd/plugin-slash";
   import { code } from "@cartamd/plugin-code";
-
   import "../../lib/styles/github.scss";
   import {
     Sidebar,
@@ -12,7 +11,6 @@
     SidebarItem,
     SidebarWrapper,
   } from "flowbite-svelte";
-  import { ChartPieSolid } from "flowbite-svelte-icons";
 
   const carta = new Carta({
     sanitizer: false,

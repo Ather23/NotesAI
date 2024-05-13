@@ -29,7 +29,7 @@ export class AgentConfig {
         this.instructions = instructions;
     }
 }
-export class OpenAiCodingAgent implements IAgent {
+export class OpenAICodingAgent implements IAgent {
     name!: string;
     description!: string;
     prompt!: string;

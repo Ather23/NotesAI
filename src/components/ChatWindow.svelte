@@ -1,17 +1,32 @@
 <script lang="ts">
   import { ChatMessage } from "./chatResponse/ChatMessage";
   import ChatMessageComponent from "./chatResponse/ChatMessageComponent.svelte";
-  import { AgentConfig, OpenAiCodingAgent } from "../lib/OpenAiCodingAgent";
+  import { AgentConfig, OpenAICodingAgent } from "../lib/OpenAICodingAgent";
   import { ChatSession } from "../lib/ChatSession";
-  import { Textarea, Toolbar, ToolbarButton } from "flowbite-svelte";
-  import { FileCopyAltSolid, PaperPlaneSolid } from "flowbite-svelte-icons";
+  import {
+    Sidebar,
+    SidebarGroup,
+    SidebarItem,
+    SidebarWrapper,
+    Textarea,
+    Toolbar,
+    ToolbarButton,
+  } from "flowbite-svelte";
+  import {
+    ChartPieSolid,
+    FileCopyAltSolid,
+    PaperPlaneSolid,
+  } from "flowbite-svelte-icons";
+  import { invoke } from "@tauri-apps/api/tauri";
+  import { onMount } from "svelte";
 
   let chatArray: ChatMessage[] = [];
 
   //todo: store this locally?
-  export let chatSession: ChatSession;
   export let agentResponse = "";
   let userMessage = "";
+
+  let chatSessions: string[] = [];
 
   let instructions =
     "Your are a helpful assistant that can answer relevant questions. Your response should be formatted clearly in markdow format. Create new line between bullet points.";
@@ -22,6 +37,26 @@
     instructions
   );
 
+  async function load_chat_sessions(): Promise<void> {
+    await invoke("list_all_sessions")
+      .then((seh) => {
+        console.log(seh);
+        chatSessions = seh as string[];
+      })
+      .catch((err) => {
+        console.log("error: " + err);
+      });
+  }
+
+  onMount(load_chat_sessions);
+
+  function sessions(): string[] {
+    // return await invoke("list_all_sessions").then((sessions) => {
+    //   return ["asdf", "asdf"] as string[];
+    // });
+    return ["asdf", "asdf"] as string[];
+  }
+
   async function predict() {
     if (userMessage == "") {
       return;
@@ -30,7 +65,7 @@
     let prompMsg = userMessage;
     userMessage = "";
 
-    let openAiAgent = new OpenAiCodingAgent();
+    let openAiAgent = new OpenAICodingAgent();
     openAiAgent.setAgentConfig(config);
     chatArray.push(new ChatMessage("user", false, prompMsg));
     chatArray = chatArray;
@@ -48,6 +83,21 @@
 </script>
 
 <div class="w-full h-full flex flex-col">
+  <Sidebar>
+    <SidebarWrapper>
+      <SidebarGroup>
+        {#each chatSessions as chat}
+          <SidebarItem label={chat} href="/">
+            <svelte:fragment slot="icon">
+              <ChartPieSolid
+                class="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+              />
+            </svelte:fragment>
+          </SidebarItem>
+        {/each}
+      </SidebarGroup>
+    </SidebarWrapper>
+  </Sidebar>
   <div class="flex-1 overflow-y-auto overflow-x-hidden">
     {#each chatArray as chat}
       <ChatMessageComponent msg={chat.msg} isAgent={chat.isAgent} />

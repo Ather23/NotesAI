@@ -9,6 +9,6 @@
   }
 </script>
 
-<div class="flex flex-col h-screen w-screen px-5">
+<div class="flex flex-col h-screen w-screen px-5 py-5">
   <ChatWindow chatSession={new ChatSession(generate_session())}></ChatWindow>
 </div>
