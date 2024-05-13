@@ -21,6 +21,7 @@
   import { onMount } from "svelte";
 
   let chatArray: ChatMessage[] = [];
+  let mesgFromRust: object;
 
   //todo: store this locally?
   export let agentResponse = "";
@@ -50,7 +51,15 @@
 
   onMount(load_chat_sessions);
 
-  function sessions(): string[] {
+  function load_session_by_id(event: MouseEvent, session: string) {
+    console.log("Session Id: " + session);
+    invoke("load_chat_from_session", { session: session })
+      .then((chat) => {
+        mesgFromRust = chat as object;
+      })
+      .catch((err) => {
+        console.log("error: " + err);
+      });
     // return await invoke("list_all_sessions").then((sessions) => {
     //   return ["asdf", "asdf"] as string[];
     // });
@@ -83,17 +92,18 @@
 </script>
 
 <div class="w-full h-full flex flex-col">
+  <div>{mesgFromRust}</div>
   <Sidebar>
     <SidebarWrapper>
       <SidebarGroup>
-        {#each chatSessions as chat}
-          <SidebarItem label={chat} href="/">
-            <svelte:fragment slot="icon">
-              <ChartPieSolid
-                class="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
-              />
-            </svelte:fragment>
-          </SidebarItem>
+        {#each chatSessions as session}
+          <SidebarItem
+            label={session}
+            on:click={(e) => {
+              load_session_by_id(e, session);
+              console.log(mesgFromRust);
+            }}
+          ></SidebarItem>
         {/each}
       </SidebarGroup>
     </SidebarWrapper>
