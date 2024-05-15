@@ -19,9 +19,14 @@
   } from "flowbite-svelte-icons";
   import { invoke } from "@tauri-apps/api/tauri";
   import { onMount } from "svelte";
+  import { emit, listen, type UnlistenFn } from "@tauri-apps/api/event";
+  import { appWindow, WebviewWindow } from "@tauri-apps/api/window";
+
+  let unlisten: UnlistenFn;
 
   let chatArray: ChatMessage[] = [];
   let mesgFromRust: object;
+  invoke("frontend_is_ready");
 
   //todo: store this locally?
   export let agentResponse = "";
@@ -49,20 +54,17 @@
       });
   }
 
-  onMount(load_chat_sessions);
+  onMount(async () => {
+    load_chat_sessions();
+    unlisten = await listen("session_loaded", (e) => {
+      console.log("loading session");
+      console.log(e.payload);
+    });
+  });
 
   function load_session_by_id(event: MouseEvent, session: string) {
     console.log("Session Id: " + session);
-    invoke("load_chat_from_session", { session: session })
-      .then((chat) => {
-        mesgFromRust = chat as object;
-      })
-      .catch((err) => {
-        console.log("error: " + err);
-      });
-    // return await invoke("list_all_sessions").then((sessions) => {
-    //   return ["asdf", "asdf"] as string[];
-    // });
+    invoke("load_session_by_id", { window: appWindow });
     return ["asdf", "asdf"] as string[];
   }
 
@@ -97,13 +99,13 @@
     <SidebarWrapper>
       <SidebarGroup>
         {#each chatSessions as session}
-          <SidebarItem
-            label={session}
-            on:click={(e) => {
-              load_session_by_id(e, session);
-              console.log(mesgFromRust);
-            }}
-          ></SidebarItem>
+          <li>
+            <button
+              on:click={(e) => {
+                invoke("load_session_by_id", { window: appWindow });
+              }}>{session}</button
+            >
+          </li>
         {/each}
       </SidebarGroup>
     </SidebarWrapper>
