@@ -1,4 +1,3 @@
-import { Chat } from "openai/resources/index.mjs";
 import { ChatMessage } from "../components/chatResponse/ChatMessage";
 
 export class ChatSession{
@@ -15,5 +14,9 @@ export class ChatSession{
     public setMessage(message:ChatMessage){
         this.chatMessages.set(this.nextMsgIdx, message);
         this.nextMsgIdx++;
+    }
+
+    public getMessageArray(): ChatMessage[]{
+        return  Array.from(this.chatMessages.values())
     }
 }

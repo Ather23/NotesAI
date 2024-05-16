@@ -2,7 +2,7 @@ import OpenAI from 'openai';
 import { ChatMessage } from '../components/chatResponse/ChatMessage';
 import type { ChatCompletionMessageParam } from 'openai/resources/index.mjs';
 import { invoke } from '@tauri-apps/api/tauri'
-import { Utils } from '../utils';
+import { Utils } from './utils'
 
 export interface IAgent {
     name: string;

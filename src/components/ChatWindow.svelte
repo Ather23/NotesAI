@@ -21,10 +21,18 @@
   import { onMount } from "svelte";
   import { emit, listen, type UnlistenFn } from "@tauri-apps/api/event";
   import { appWindow, WebviewWindow } from "@tauri-apps/api/window";
+  import { Utils } from "../lib/utils";
+  import {
+    SessionStoreToChatSession,
+    TauriEventToChatMessageStore,
+    TauriEventToSessionStore,
+  } from "../lib/mappers/Mappers";
 
   let unlisten: UnlistenFn;
 
   let chatArray: ChatMessage[] = [];
+  let chatSession: ChatSession;
+
   let mesgFromRust: object;
   invoke("frontend_is_ready");
 
@@ -58,14 +66,19 @@
     load_chat_sessions();
     unlisten = await listen("session_loaded", (e) => {
       console.log("loading session");
-      console.log(e.payload);
+      if (!Utils.isUndefined(e.payload)) {
+        console.log(e.payload);
+        let storedSession = new TauriEventToSessionStore().Map(e);
+        chatSession = new SessionStoreToChatSession().Map(storedSession);
+        chatArray = chatSession.getMessageArray();
+        console.log("chat array: " + chatArray);
+      }
     });
   });
 
   function load_session_by_id(event: MouseEvent, session: string) {
     console.log("Session Id: " + session);
     invoke("load_session_by_id", { window: appWindow });
-    return ["asdf", "asdf"] as string[];
   }
 
   async function predict() {
@@ -102,7 +115,8 @@
           <li>
             <button
               on:click={(e) => {
-                invoke("load_session_by_id", { window: appWindow });
+                load_session_by_id(e, session);
+                // invoke("load_session_by_id", { window: appWindow });
               }}>{session}</button
             >
           </li>
